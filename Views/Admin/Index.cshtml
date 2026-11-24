@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<div class="container py-5">
+
+    <div class="mb-5">
+        <h1 class="fw-bold">Yönetim Paneli</h1>
+        <p class="text-muted">
+            Veteriner Kliniği Randevu ve Hasta Takip Sistemi
+        </p>
+        <span class="badge bg-success">
+            Yönetici girişi başarılı
+        </span>
+    </div>
+
+    <div class="row g-4">
+
+        @{
+            var moduller = new[]
+            {
+                new { Baslik = "Hizmet Yönetimi",
+                      Aciklama = "Hizmet, süre ve ücret işlemleri" },
+
+                new { Baslik = "Veteriner Yönetimi",
+                      Aciklama = "Hekimler, uzmanlıklar ve çalışma saatleri" },
+
+                new { Baslik = "Randevu Yönetimi",
+                      Aciklama = "Randevu onaylama ve reddetme" },
+
+                new { Baslik = "Evcil Hayvanlar",
+                      Aciklama = "Hasta bilgileri ve aşı kayıtları" },
+
+                new { Baslik = "Kullanıcı Yönetimi",
+                      Aciklama = "Üyeler ve kullanıcı rolleri" },
+
+                new { Baslik = "Raporlama",
+                      Aciklama = "Randevu istatistikleri ve ciro" }
+            };
+        }
+
+        @foreach (var modul in moduller)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold">
+                            @modul.Baslik
+                        </h5>
+
+                        <p class="text-muted">
+                            @modul.Aciklama
+                        </p>
+
+                        
+                        @if (modul.Baslik == "Hizmet Yönetimi")
+                        {
+                            <a asp-controller="Hizmetler"
+                               asp-action="Index"
+                               class="btn btn-primary mt-2">
+                                Hizmetleri Yönet
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Hazırlanıyor
+                            </span>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

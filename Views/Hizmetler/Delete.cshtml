@@ -1,0 +1,80 @@
+﻿@model VeterinerKlinigi.Models.Hizmet
+
+@{
+    ViewData["Title"] = "Hizmet Sil";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-danger text-white p-4">
+                    <h3 class="mb-0">Hizmet Silme</h3>
+                    <p class="mb-0 mt-2">
+                        Silme işlemini onaylayın.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="alert alert-warning">
+                        <strong>Dikkat!</strong>
+                        Bu hizmeti silmek istediğinizden
+                        emin misiniz?
+                    </div>
+
+                    <dl class="row">
+
+                        <dt class="col-sm-4">Hizmet Adı</dt>
+                        <dd class="col-sm-8">@Model.Ad</dd>
+
+                        <dt class="col-sm-4">Açıklama</dt>
+                        <dd class="col-sm-8">@Model.Aciklama</dd>
+
+                        <dt class="col-sm-4">Süre</dt>
+                        <dd class="col-sm-8">
+                            @Model.SureDakika dakika
+                        </dd>
+
+                        <dt class="col-sm-4">Ücret</dt>
+                        <dd class="col-sm-8">
+                            @Model.Ucret.ToString("N2") TL
+                        </dd>
+
+                    </dl>
+
+                    <hr />
+
+                    <form asp-controller="Hizmetler"
+                          asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          asp-antiforgery="true">
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                Evet, Hizmeti Sil
+                            </button>
+
+                            <a asp-controller="Hizmetler"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                İptal
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
