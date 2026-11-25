@@ -1,0 +1,87 @@
+﻿@model VeterinerKlinigi.Models.Veteriner
+
+@{
+    ViewData["Title"] = "Veteriner Sil";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-danger text-white p-4">
+                    <h3 class="mb-0">Veteriner Silme</h3>
+                    <p class="mb-0 mt-2">
+                        Silme işlemini onaylayın.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="alert alert-warning">
+                        <strong>Dikkat!</strong>
+                        Bu veterineri silmek istediğinizden
+                        emin misiniz?
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Ad Soyad</dt>
+                        <dd class="col-sm-8">@Model.AdSoyad</dd>
+
+                        <dt class="col-sm-4">Uzmanlık Alanı</dt>
+                        <dd class="col-sm-8">
+                            @Model.UzmanlikAlani
+                        </dd>
+
+                        <dt class="col-sm-4">Açıklama</dt>
+                        <dd class="col-sm-8">
+                            @Model.Aciklama
+                        </dd>
+
+                        <dt class="col-sm-4">Durum</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.AktifMi)
+                            {
+                                <span class="badge bg-success">
+                                    Aktif
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    Pasif
+                                </span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr />
+
+                    <form asp-controller="Veterinerler"
+                          asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          asp-antiforgery="true">
+
+                        <div class="d-flex gap-2">
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                Evet, Veterineri Sil
+                            </button>
+
+                            <a asp-controller="Veterinerler"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                İptal
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

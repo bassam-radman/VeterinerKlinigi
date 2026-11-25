@@ -1,0 +1,155 @@
+﻿@model IEnumerable<VeterinerKlinigi.Models.Veteriner>
+
+@{
+    ViewData["Title"] = "Veteriner Yönetimi";
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Veteriner Yönetimi</h1>
+            <p class="text-muted">
+                Klinikte görev yapan veteriner hekimler
+            </p>
+        </div>
+        
+        <a asp-controller="Veterinerler"
+           asp-action="Create"
+           class="btn btn-primary me-2">
+            + Yeni Veteriner Ekle
+        </a>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Yönetim Paneline Dön
+        </a>
+    </div>
+    
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            @TempData["BasariMesaji"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Kapat">
+            </button>
+        </div>
+    }
+    
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+
+            @TempData["HataMesaji"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Kapat">
+            </button>
+        </div>
+    }
+
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Ad Soyad</th>
+                            <th>Uzmanlık Alanı</th>
+                            <th>Açıklama</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                        @foreach (var veteriner in Model)
+                        {
+                            <tr>
+                                <td>@veteriner.Id</td>
+
+                                <td class="fw-bold">
+                                    @veteriner.AdSoyad
+                                </td>
+
+                                <td>
+                                    @veteriner.UzmanlikAlani
+                                </td>
+
+                                <td>
+                                    @veteriner.Aciklama
+                                </td>
+
+                                <td>
+                                    @if (veteriner.AktifMi)
+                                    {
+                                        <span class="badge bg-success">
+                                            Aktif
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            Pasif
+                                        </span>
+                                    }
+                                </td>
+                                
+                               
+                                <td>
+                                    <div class="d-flex gap-2">
+
+                                        <a asp-controller="Veterinerler"
+                                           asp-action="Edit"
+                                           asp-route-id="@veteriner.Id"
+                                           class="btn btn-warning btn-sm">
+                                            Düzenle
+                                        </a>
+
+                                        <a asp-controller="Veterinerler"
+                                           asp-action="Delete"
+                                           asp-route-id="@veteriner.Id"
+                                           class="btn btn-danger btn-sm">
+                                            Sil
+                                        </a>
+
+                                    </div>
+                                </td>
+
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center mt-3">
+                    Henüz kayıtlı veteriner bulunmuyor.
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

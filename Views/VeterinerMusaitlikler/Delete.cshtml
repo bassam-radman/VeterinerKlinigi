@@ -1,0 +1,108 @@
+﻿@model VeterinerKlinigi.Models.VeterinerMusaitlik
+
+@{
+    ViewData["Title"] = "Çalışma Saati Sil";
+
+    string[] gunler =
+    {
+        "Pazar",
+        "Pazartesi",
+        "Salı",
+        "Çarşamba",
+        "Perşembe",
+        "Cuma",
+        "Cumartesi"
+    };
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-danger text-white p-4">
+                    <h3 class="mb-0">Çalışma Saati Silme</h3>
+                    <p class="mb-0 mt-2">
+                        Silme işlemini onaylayın.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="alert alert-warning">
+                        <strong>Dikkat!</strong>
+                        Bu çalışma saatini silmek istediğinizden
+                        emin misiniz?
+                    </div>
+
+                    <dl class="row">
+
+                        <dt class="col-sm-4">Veteriner</dt>
+                        <dd class="col-sm-8">
+                            @Model.Veteriner.AdSoyad
+                        </dd>
+
+                        <dt class="col-sm-4">Çalışma Günü</dt>
+                        <dd class="col-sm-8">
+                            @gunler[(int)Model.Gun]
+                        </dd>
+
+                        <dt class="col-sm-4">Başlangıç Saati</dt>
+                        <dd class="col-sm-8">
+                            @Model.BaslangicSaati.ToString(@"hh\:mm")
+                        </dd>
+
+                        <dt class="col-sm-4">Bitiş Saati</dt>
+                        <dd class="col-sm-8">
+                            @Model.BitisSaati.ToString(@"hh\:mm")
+                        </dd>
+
+                        <dt class="col-sm-4">Durum</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.AktifMi)
+                            {
+                                <span class="badge bg-success">
+                                    Aktif
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    Pasif
+                                </span>
+                            }
+                        </dd>
+
+                    </dl>
+
+                    <hr />
+
+                    <form asp-controller="VeterinerMusaitlikler"
+                          asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          asp-antiforgery="true">
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                Evet, Çalışma Saatini Sil
+                            </button>
+
+                            <a asp-controller="VeterinerMusaitlikler"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                İptal
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
