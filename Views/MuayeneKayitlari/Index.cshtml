@@ -1,0 +1,135 @@
+﻿
+@model IEnumerable<VeterinerKlinigi.Models.MuayeneKaydi>
+
+@{
+    ViewData["Title"] = "Muayene Kayıtları";
+}
+
+<div class="container py-5">
+    <h1 class="fw-bold mb-4">Muayene Kayıtları</h1>
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["BasariMesaji"]
+        </div>
+    }
+
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["HataMesaji"]
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Yeni Muayene Kaydı</h5>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" method="post"
+                  asp-antiforgery="true">
+
+                <div class="mb-3">
+                    <label class="form-label">Randevu</label>
+                    <select name="randevuId"
+                            asp-items="ViewBag.Randevular"
+                            class="form-select" required>
+                        <option value="">Randevu seçiniz</option>
+                    </select>
+                    <small class="text-muted">
+                        Yalnızca geçmiş ve tamamlanmış
+                        randevular listelenir.
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Muayene Bulguları
+                    </label>
+                    <textarea name="bulgular" required
+                              maxlength="2000"
+                              class="form-control"
+                              rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Teşhis</label>
+                    <textarea name="teshis" maxlength="1000"
+                              class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tedavi</label>
+                    <textarea name="tedavi" maxlength="2000"
+                              class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Hekim Notu</label>
+                    <textarea name="hekimNotu" maxlength="2000"
+                              class="form-control"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Muayeneyi Kaydet
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header">
+            <h5 class="mb-0">Muayene Geçmişi</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Hayvan</th>
+                        <th>Veteriner</th>
+                        <th>Bulgular</th>
+                        <th>Teşhis</th>
+                        <th>Tedavi</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td>@m.Randevu.EvcilHayvan.Ad</td>
+                            <td>@m.Randevu.Veteriner.AdSoyad</td>
+                            <td>@m.Bulgular</td>
+                            <td>@m.Teshis</td>
+                            <td>@m.Tedavi</td>
+                            <td>
+                                @m.KayitTarihi.ToLocalTime()
+                                    .ToString("dd.MM.yyyy HH:mm")
+                            </td>
+                            
+                            <td>
+                                <a asp-action="Edit"
+                                   asp-route-id="@m.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Düzenle
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz muayene kaydı bulunmuyor.
+                </div>
+            }
+        </div>
+    </div>
+</div>

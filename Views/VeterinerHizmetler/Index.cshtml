@@ -1,0 +1,176 @@
+﻿@model IEnumerable<VeterinerKlinigi.Models.VeterinerHizmet>
+
+@{
+    ViewData["Title"] = "Veteriner Hizmet Atama";
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Veteriner Hizmet Atama</h1>
+            <p class="text-muted">
+                Veterinerlerin verebildiği hizmetleri yönetin.
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Yönetim Paneline Dön
+        </a>
+    </div>
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["BasariMesaji"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
+
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["HataMesaji"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
+
+    <!-- YENI HIZMET ATAMA -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white p-3">
+            <h5 class="mb-0">Yeni Hizmet Ata</h5>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-controller="VeterinerHizmetler"
+                  asp-action="Create"
+                  method="post"
+                  asp-antiforgery="true">
+
+                <div class="row g-3">
+
+                    <div class="col-md-5">
+                        <label class="form-label">
+                            Veteriner Seçiniz
+                        </label>
+
+                        <select name="veterinerId"
+                                asp-items="ViewBag.Veterinerler"
+                                class="form-select"
+                                required>
+                            <option value="">
+                                -- Veteriner Seçiniz --
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label class="form-label">
+                            Hizmet Seçiniz
+                        </label>
+
+                        <select name="hizmetId"
+                                asp-items="ViewBag.Hizmetler"
+                                class="form-select"
+                                required>
+                            <option value="">
+                                -- Hizmet Seçiniz --
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Hizmet Ata
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ATANMIS HIZMETLER -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-light p-3">
+            <h5 class="mb-0">Atanmış Hizmetler</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Veteriner</th>
+                            <th>Atanan Hizmet</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var kayit in Model)
+                        {
+                            <tr>
+                                <td>@kayit.Id</td>
+
+                                <td class="fw-bold">
+                                    @kayit.Veteriner.AdSoyad
+                                </td>
+
+                                <td>
+                                    @kayit.Hizmet.Ad
+                                </td>
+
+                                <td>
+                                    <form asp-controller="VeterinerHizmetler"
+                                          asp-action="Delete"
+                                          asp-route-id="@kayit.Id"
+                                          method="post"
+                                          asp-antiforgery="true"
+                                          onsubmit="return confirm('Bu hizmet atamasını kaldırmak istediğinize emin misiniz?');">
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+                                            Atamayı Kaldır
+                                        </button>
+
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    Henüz atanmış hizmet bulunmuyor.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

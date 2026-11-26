@@ -1,0 +1,139 @@
+﻿@model IEnumerable<VeterinerKlinigi.Models.Randevu>
+@using VeterinerKlinigi.Models
+
+@{
+    ViewData["Title"] = "Randevu Yönetimi";
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between mb-4">
+        <h1 class="fw-bold">Randevu Yönetimi</h1>
+
+        <a asp-action="Create"
+           class="btn btn-primary">
+            + Yeni Randevu
+        </a>
+    </div>
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["BasariMesaji"]
+        </div>
+    }
+
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["HataMesaji"]
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Hayvan</th>
+                        <th>Veteriner</th>
+                        <th>Hizmet</th>
+                        <th>Tarih</th>
+                        <th>Süre</th>
+                        <th>Ücret</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.EvcilHayvan.Ad</td>
+                            <td>@r.Veteriner.AdSoyad</td>
+                            <td>@r.Hizmet.Ad</td>
+                            <td>
+                                @r.RandevuTarihi.ToString("dd.MM.yyyy HH:mm")
+                            </td>
+                            <td>@r.SureDakika dk</td>
+                            <td>@r.Ucret.ToString("N2") TL</td>
+                            <td>@r.Durum</td>
+
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    
+                                    @if (r.Durum == RandevuDurumu.Bekliyor ||
+                                         r.Durum == RandevuDurumu.Onaylandi)
+                                    {
+                                        <a asp-action="Edit"
+                                           asp-route-id="@r.Id"
+                                           class="btn btn-warning btn-sm">
+                                            Düzenle
+                                        </a>
+                                    }
+
+
+                                    @if (r.Durum == RandevuDurumu.Bekliyor)
+                                    {
+                                        <form asp-action="DurumGuncelle"
+                                              asp-route-id="@r.Id"
+                                              method="post">
+                                            <button name="yeniDurum"
+                                                    value="1"
+                                                    class="btn btn-success btn-sm">
+                                                Onayla
+                                            </button>
+                                            <button name="yeniDurum"
+                                                    value="2"
+                                                    class="btn btn-danger btn-sm">
+                                                Reddet
+                                            </button>
+                                        </form>
+                                    }
+
+                                    @if (r.Durum == RandevuDurumu.Onaylandi)
+                                    {
+                                        <form asp-action="DurumGuncelle"
+                                              asp-route-id="@r.Id"
+                                              method="post">
+                                            <button name="yeniDurum"
+                                                    value="3"
+                                                    class="btn btn-success btn-sm">
+                                                Tamamla
+                                            </button>
+                                        </form>
+                                    }
+
+                                    @if (r.Durum == RandevuDurumu.Bekliyor ||
+                                         r.Durum == RandevuDurumu.Onaylandi)
+                                    {
+                                        <form asp-action="DurumGuncelle"
+                                              asp-route-id="@r.Id"
+                                              method="post">
+                                            <button name="yeniDurum"
+                                                    value="4"
+                                                    class="btn btn-outline-danger btn-sm">
+                                                İptal Et
+                                            </button>
+                                        </form>
+                                    }
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz kayıtlı randevu bulunmuyor.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

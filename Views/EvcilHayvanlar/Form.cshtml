@@ -1,0 +1,130 @@
+﻿@model VeterinerKlinigi.Models.EvcilHayvan
+
+@{
+    bool duzenleme = Model.Id > 0;
+    ViewData["Title"] = duzenleme
+        ? "Hayvan Düzenle"
+        : "Yeni Hayvan Ekle";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-primary text-white p-4">
+                    <h3>
+                        @(duzenleme ? "Hayvan Düzenle" : "Yeni Hayvan Ekle")
+                    </h3>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-controller="EvcilHayvanlar"
+                          asp-action="@(duzenleme ? "Edit" : "Create")"
+                          asp-route-id="@(duzenleme ? Model.Id : (int?)null)"
+                          method="post"
+                          asp-antiforgery="true">
+
+                        <input asp-for="Id" type="hidden" />
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Ad">Hayvan Adı</label>
+                            <input asp-for="Ad" class="form-control" />
+                            <span asp-validation-for="Ad"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Tur">Tür</label>
+                                <input asp-for="Tur"
+                                       class="form-control"
+                                       placeholder="Kedi, Köpek..." />
+                                <span asp-validation-for="Tur"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Irk">Irk</label>
+                                <input asp-for="Irk"
+                                       class="form-control" />
+                                <span asp-validation-for="Irk"
+                                      class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DogumTarihi">
+                                    Doğum Tarihi
+                                </label>
+                                <input asp-for="DogumTarihi"
+                                       type="date"
+                                       class="form-control" />
+                                <span asp-validation-for="DogumTarihi"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Kilo">Kilo (kg)</label>
+                                <input asp-for="Kilo"
+                                       type="text"
+                                       inputmode="decimal"
+                                       class="form-control" />
+                                <span asp-validation-for="Kilo"
+                                      class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SahipId">
+                                Hayvan Sahibi
+                            </label>
+
+                            <select asp-for="SahipId"
+                                    asp-items="ViewBag.Sahipler"
+                                    class="form-select">
+                                <option value="">
+                                    -- Sahip Seçiniz --
+                                </option>
+                            </select>
+
+                            <span asp-validation-for="SahipId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input asp-for="AktifMi"
+                                   class="form-check-input" />
+                            <label asp-for="AktifMi"
+                                   class="form-check-label">
+                                Aktif
+                            </label>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Kaydet
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            İptal
+                        </a>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,162 @@
+﻿@model IEnumerable<VeterinerKlinigi.Models.KullaniciRolViewModel>
+
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+    string kendiId = ViewBag.KendiId ?? "";
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Kullanıcı Yönetimi</h1>
+            <p class="text-muted">
+                Kullanıcılar ve yetki işlemleri
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Yönetim Paneline Dön
+        </a>
+    </div>
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["BasariMesaji"]
+        </div>
+    }
+
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["HataMesaji"]
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>E-posta</th>
+                        <th>Mevcut Roller</th>
+                        <th>E-posta Onayı</th>
+                        <th>Rol Yönetimi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var kullanici in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@kullanici.Email</strong>
+
+                                @if (kullanici.Id == kendiId)
+                                {
+                                    <span class="badge bg-info">
+                                        Siz
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (kullanici.Roller.Any())
+                                {
+                                    @foreach (var rol in kullanici.Roller)
+                                    {
+                                        <span class="badge bg-primary me-1">
+                                            @rol
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        Rol atanmamış
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (kullanici.EmailOnayli)
+                                {
+                                    <span class="badge bg-success">
+                                        Onaylı
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        Onaysız
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (kullanici.Id == kendiId)
+                                {
+                                    <span class="text-muted">
+                                        Kendi rolünüzü değiştiremezsiniz
+                                    </span>
+                                }
+                                else
+                                {
+                                    <form asp-action="RolDegistir"
+                                          method="post"
+                                          asp-antiforgery="true"
+                                          class="d-flex gap-2"
+                                          onsubmit="return confirm('Kullanıcının rolünü değiştirmek istediğinize emin misiniz?');">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@kullanici.Id" />
+
+                                        <select name="rol"
+                                                class="form-select form-select-sm"
+                                                aria-label="Yeni rol"
+                                                required>
+                                            <option value="" selected
+                                                    disabled>
+                                                Rol seçiniz
+                                            </option>
+
+                                            <option value="Uye">
+                                                Üye
+                                            </option>
+
+                                            <option value="Veteriner">
+                                                Veteriner
+                                            </option>
+
+                                            <option value="Admin">
+                                                Admin
+                                            </option>
+                                        </select>
+
+                                        <button type="submit"
+                                                class="btn btn-primary btn-sm">
+                                            Kaydet
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Kayıtlı kullanıcı bulunmuyor.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Raporlama";
+
+    decimal ucretToplami =
+        (decimal)ViewBag.TamamlananUcretToplami;
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Klinik Raporları</h1>
+            <p class="text-muted">
+                Veteriner Kliniği İstatistik Paneli
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Yönetim Paneline Dön
+        </a>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Toplam Evcil Hayvan</h6>
+                    <h2 class="fw-bold text-primary">
+                        @ViewBag.HayvanSayisi
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Aktif Veteriner</h6>
+                    <h2 class="fw-bold text-success">
+                        @ViewBag.VeterinerSayisi
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Aktif Hizmet</h6>
+                    <h2 class="fw-bold">
+                        @ViewBag.HizmetSayisi
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Toplam Randevu</h6>
+                    <h2 class="fw-bold">
+                        @ViewBag.ToplamRandevu
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Bekleyen Randevu</h6>
+                    <h2 class="fw-bold text-warning">
+                        @ViewBag.Bekleyen
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Onaylanan Randevu</h6>
+                    <h2 class="fw-bold text-info">
+                        @ViewBag.Onaylanan
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Tamamlanan Randevu</h6>
+                    <h2 class="fw-bold text-success">
+                        @ViewBag.Tamamlanan
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>İptal Edilen Randevu</h6>
+                    <h2 class="fw-bold text-danger">
+                        @ViewBag.Iptal
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h6>Reddedilen Randevu</h6>
+                    <h2 class="fw-bold text-secondary">
+                        @ViewBag.Reddedilen
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h5>Tamamlanan Randevuların Toplam Ücreti</h5>
+                    <h2 class="fw-bold text-success">
+                        @ucretToplami.ToString("N2") TL
+                    </h2>
+                    <p class="text-muted mb-0">
+                        Bu tutar tahsil edilmiş ödeme değil,
+                        tamamlanan hizmetlerin kayıtlı ücret toplamıdır.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

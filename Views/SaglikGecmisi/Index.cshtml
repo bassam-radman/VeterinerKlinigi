@@ -1,0 +1,131 @@
+﻿@model VeterinerKlinigi.Models.SaglikGecmisiViewModel
+
+@{
+    ViewData["Title"] = "Sağlık Geçmişi";
+}
+
+<div class="container py-5">
+
+    <h1 class="fw-bold mb-2">Evcil Hayvan Sağlık Geçmişi</h1>
+
+    <p class="text-muted mb-4">
+        Hayvanlarınızın muayene ve aşı kayıtlarını görüntüleyin.
+    </p>
+
+    <!-- MUAYENE GECMISI -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Muayene Geçmişi</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Hayvan</th>
+                        <th>Tarih</th>
+                        <th>Bulgular</th>
+                        <th>Teşhis</th>
+                        <th>Tedavi</th>
+                        <th>Hekim Notu</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var m in Model.Muayeneler)
+                    {
+                        <tr>
+                            <td>@m.Randevu.EvcilHayvan.Ad</td>
+                            <td>
+                                @m.KayitTarihi.ToLocalTime()
+                                .ToString("dd.MM.yyyy")
+                            </td>
+                            <td>@m.Bulgular</td>
+                            <td>@m.Teshis</td>
+                            <td>@m.Tedavi</td>
+                            <td>@m.HekimNotu</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Muayeneler.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz muayene kaydınız bulunmuyor.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- ASI GECMISI -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Aşı Geçmişi</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Hayvan</th>
+                        <th>Aşı Adı</th>
+                        <th>Yapılma Tarihi</th>
+                        <th>Sonraki Doz</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var a in Model.Asilar)
+                    {
+                        <tr>
+                            <td>@a.EvcilHayvan.Ad</td>
+                            <td>@a.AsiAdi</td>
+                            <td>
+                                @a.YapilmaTarihi.ToString("dd.MM.yyyy")
+                            </td>
+                            <td>
+                                @(a.SonrakiDozTarihi?.ToString("dd.MM.yyyy")
+                                  ?? "Belirtilmedi")
+                            </td>
+                            <td>
+                                @if (a.SonrakiDozTarihi.HasValue &&
+                                     a.SonrakiDozTarihi.Value.Date < DateTime.Today)
+                                {
+                                    <span class="badge bg-danger">
+                                        Gecikmiş
+                                    </span>
+                                }
+                                else if (a.SonrakiDozTarihi.HasValue)
+                                {
+                                    <span class="badge bg-success">
+                                        Takvimde
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        Tarih belirtilmedi
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Asilar.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz aşı kaydınız bulunmuyor.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+﻿@model IEnumerable<VeterinerKlinigi.Models.AsiKaydi>
+
+@{
+    ViewData["Title"] = "Aşı Takip Sistemi";
+}
+
+<div class="container py-5">
+    <h1 class="fw-bold mb-4">Aşı Takip Sistemi</h1>
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["BasariMesaji"]
+        </div>
+    }
+
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["HataMesaji"]
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Yeni Aşı Kaydı</h5>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" method="post"
+                  asp-antiforgery="true">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Evcil Hayvan
+                        </label>
+                        <select name="evcilHayvanId"
+                                asp-items="ViewBag.Hayvanlar"
+                                class="form-select" required>
+                            <option value="">Hayvan seçiniz</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Aşı Adı</label>
+                        <input name="asiAdi" maxlength="100"
+                               class="form-control" required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Yapılma Tarihi
+                        </label>
+                        <input name="yapilmaTarihi" type="date"
+                               class="form-control" required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Sonraki Doz Tarihi
+                        </label>
+                        <input name="sonrakiDozTarihi" type="date"
+                               class="form-control" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Açıklama</label>
+                        <textarea name="aciklama" maxlength="500"
+                                  class="form-control"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            Aşı Kaydını Kaydet
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Aşı Geçmişi</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Hayvan</th>
+                        <th>Aşı</th>
+                        <th>Yapılma Tarihi</th>
+                        <th>Sonraki Doz</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td>@a.EvcilHayvan.Ad</td>
+                            <td>@a.AsiAdi</td>
+                            <td>
+                                @a.YapilmaTarihi.ToString("dd.MM.yyyy")
+                            </td>
+                            <td>
+                                @(a.SonrakiDozTarihi?.ToString("dd.MM.yyyy")
+                                    ?? "Belirtilmedi")
+                            </td>
+                            <td>
+                                @if (a.SonrakiDozTarihi.HasValue &&
+                                     a.SonrakiDozTarihi.Value.Date < DateTime.Today)
+                                {
+                                    <span class="badge bg-danger">
+                                        Gecikmiş
+                                    </span>
+                                }
+                                else if (a.SonrakiDozTarihi.HasValue)
+                                {
+                                    <span class="badge bg-success">
+                                        Takvimde
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        Tarih yok
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz aşı kaydı bulunmuyor.
+                </div>
+            }
+        </div>
+    </div>
+</div>

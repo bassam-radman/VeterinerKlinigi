@@ -1,0 +1,111 @@
+﻿@model VeterinerKlinigi.Models.RandevuOlusturModel
+
+
+@{
+    int? editId = ViewData["EditId"] is int id ? id : null;
+    bool duzenleme = editId.HasValue;
+
+    ViewData["Title"] = duzenleme
+        ? "Randevu Düzenle"
+        : "Yeni Randevu";
+}
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-primary text-white p-4">
+                    <h3>Yeni Randevu Oluştur</h3>
+                </div>
+
+                <div class="card-body p-4">
+
+                    
+                    <form asp-action="@(duzenleme ? "Edit" : "Create")"
+                          asp-route-id="@editId"
+                          method="post"
+                          asp-antiforgery="true">
+
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Evcil Hayvan</label>
+                            <select asp-for="EvcilHayvanId"
+                                    asp-items="ViewBag.Hayvanlar"
+                                    class="form-select">
+                                <option value="0">Hayvan seçiniz</option>
+                            </select>
+                            <span asp-validation-for="EvcilHayvanId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Veteriner</label>
+                            <select asp-for="VeterinerId"
+                                    asp-items="ViewBag.Veterinerler"
+                                    class="form-select">
+                                <option value="0">Veteriner seçiniz</option>
+                            </select>
+                            <span asp-validation-for="VeterinerId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hizmet</label>
+                            <select asp-for="HizmetId"
+                                    asp-items="ViewBag.Hizmetler"
+                                    class="form-select">
+                                <option value="0">Hizmet seçiniz</option>
+                            </select>
+                            <span asp-validation-for="HizmetId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RandevuTarihi"
+                                   class="form-label">
+                                Randevu Tarihi ve Saati
+                            </label>
+
+                            <input asp-for="RandevuTarihi"
+                                   asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                   type="datetime-local"
+                                   class="form-control" />
+
+                            <span asp-validation-for="RandevuTarihi"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Açıklama</label>
+                            <textarea asp-for="Aciklama"
+                                      rows="3"
+                                      class="form-control"></textarea>
+                        </div>
+
+                        
+                        <button type="submit" class="btn btn-primary">
+                            @(duzenleme ? "Değişiklikleri Kaydet" : "Randevuyu Oluştur")
+                        </button>
+
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            İptal
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

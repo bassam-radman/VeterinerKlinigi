@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VeterinerKlinigi.Data;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,8 +55,28 @@ await VeterinerKlinigi.Data.RolOlusturucu
 await VeterinerKlinigi.Data.AdminOlusturucu
     .AdminiOlusturAsync(app.Services);
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapGet("/debug/controllers", (
+        Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorCollectionProvider provider) =>
+    {
+        var controllers = provider.ActionDescriptors.Items
+            .OfType<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>()
+            .Select(a => new
+            {
+                Controller = a.ControllerName,
+                Action = a.ActionName
+            })
+            .OrderBy(a => a.Controller)
+            .ThenBy(a => a.Action)
+            .ToList();
+
+        return Results.Json(controllers);
+    }).AllowAnonymous();
+}
+
+
 app.Run();
 
 
 
-app.Run();

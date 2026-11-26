@@ -1,0 +1,97 @@
+﻿@model IEnumerable<VeterinerKlinigi.Models.AsiKaydi>
+
+@{
+    ViewData["Title"] = "Aşı Hatırlatmaları";
+    var bugun = DateTime.Today;
+}
+
+<div class="container py-5">
+
+    <h1 class="fw-bold">Aşı Hatırlatmaları</h1>
+    <p class="text-muted">
+        Geciken ve önümüzdeki 30 gün içinde planlanan aşı dozları
+    </p>
+
+    <div class="row g-3 my-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5>Geciken Dozlar</h5>
+                    <h2 class="text-danger">
+                        @ViewBag.Geciken
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5>Yaklaşan Dozlar</h5>
+                    <h2 class="text-success">
+                        @ViewBag.Yaklasan
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Hayvan</th>
+                        <th>Aşı</th>
+                        <th>Sonraki Doz</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        var gecikti =
+                            a.SonrakiDozTarihi!.Value.Date < bugun;
+
+                        <tr>
+                            <td>@a.EvcilHayvan.Ad</td>
+                            <td>@a.AsiAdi</td>
+                            
+                            <td>
+                                @(a.SonrakiDozTarihi.HasValue
+                                    ? a.SonrakiDozTarihi.Value.ToString("dd.MM.yyyy")
+                                    : "Belirtilmedi")
+                            </td>
+
+                            <td>
+                                @if (gecikti)
+                                {
+                                    <span class="badge bg-danger">
+                                        Gecikmiş
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+                                        Yaklaşıyor
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Takip edilmesi gereken yaklaşan veya
+                    gecikmiş doz bulunmuyor.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

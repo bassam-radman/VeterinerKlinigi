@@ -23,9 +23,11 @@ namespace VeterinerKlinigi.Models
         [DataType(DataType.Date)]
         public DateTime DogumTarihi { get; set; }
 
-        [Range(typeof(decimal), "0.01", "1000",
-            ErrorMessage = "Kilo 0'dan büyük olmalıdır.")]
+
+        [Range(0.01, 1000.0,
+            ErrorMessage = "Kilo 0,01 ile 1000 arasında olmalıdır.")]
         public decimal Kilo { get; set; }
+
 
         [Required]
         public string SahipId { get; set; } = string.Empty;

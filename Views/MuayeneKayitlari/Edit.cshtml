@@ -1,0 +1,82 @@
+﻿@model VeterinerKlinigi.Models.MuayeneKaydi
+
+@{
+    ViewData["Title"] = "Muayene Düzenle";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-warning p-4">
+                    <h3 class="mb-0">Muayene Düzenle</h3>
+                </div>
+
+                <div class="card-body p-4">
+
+                    @if (TempData["HataMesaji"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["HataMesaji"]
+                        </div>
+                    }
+
+                    <p>
+                        <strong>Hayvan:</strong>
+                        @Model.Randevu.EvcilHayvan.Ad
+                    </p>
+
+                    <form asp-action="Edit"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          asp-antiforgery="true">
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Bulgular
+                            </label>
+                            <textarea name="bulgular"
+                                      required maxlength="2000"
+                                      class="form-control"
+                                      rows="3">@Model.Bulgular</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Teşhis</label>
+                            <textarea name="teshis"
+                                      maxlength="1000"
+                                      class="form-control">@Model.Teshis</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tedavi</label>
+                            <textarea name="tedavi"
+                                      maxlength="2000"
+                                      class="form-control">@Model.Tedavi</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hekim Notu</label>
+                            <textarea name="hekimNotu"
+                                      maxlength="2000"
+                                      class="form-control">@Model.HekimNotu</textarea>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-warning">
+                            Değişiklikleri Kaydet
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            İptal
+                        </a>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

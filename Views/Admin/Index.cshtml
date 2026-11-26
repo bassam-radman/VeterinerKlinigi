@@ -1,14 +1,110 @@
 ﻿@{
     ViewData["Title"] = "Admin Paneli";
+
+    var moduller = new[]
+    {
+        new
+        {
+            Baslik = "Hizmet Yönetimi",
+            Aciklama = "Hizmet, süre ve ücret işlemleri",
+            Controller = "Hizmetler",
+            Buton = "Hizmetleri Yönet"
+        },
+        new
+        {
+            Baslik = "Veteriner Yönetimi",
+            Aciklama = "Hekimler ve uzmanlık alanları",
+            Controller = "Veterinerler",
+            Buton = "Veterinerleri Yönet"
+        },
+        new
+        {
+            Baslik = "Çalışma Saatleri",
+            Aciklama = "Veterinerlerin haftalık çalışma programı",
+            Controller = "VeterinerMusaitlikler",
+            Buton = "Çalışma Saatlerini Yönet"
+        },
+        new
+        {
+            Baslik = "Veteriner Hizmet Atama",
+            Aciklama = "Veterinerlere hizmet atama ve kaldırma",
+            Controller = "VeterinerHizmetler",
+            Buton = "Hizmet Atamalarını Yönet"
+        },
+        new
+        {
+            Baslik = "Randevu Yönetimi",
+            Aciklama = "Randevuları oluşturma, onaylama ve yönetme",
+            Controller = "Randevular",
+            Buton = "Randevuları Yönet"
+        },
+        new
+        {
+            Baslik = "Evcil Hayvanlar",
+            Aciklama = "Evcil hayvan kayıtlarını yönetme",
+            Controller = "EvcilHayvanlar",
+            Buton = "Hayvanları Yönet"
+        },
+        new
+        {
+            Baslik = "Muayene Kayıtları",
+            Aciklama = "Muayene bulguları, teşhis ve tedavi kayıtları",
+            Controller = "MuayeneKayitlari",
+            Buton = "Muayeneleri Yönet"
+        },
+        new
+        {
+            Baslik = "Aşı Takip Sistemi",
+            Aciklama = "Evcil hayvanların aşı geçmişi ve doz takibi",
+            Controller = "AsiKayitlari",
+            Buton = "Aşı Kayıtlarını Yönet"
+        },
+       
+new
+{
+    Baslik = "Kullanıcı Yönetimi",
+    Aciklama = "Üyeler ve kullanıcı rolleri",
+    Controller = "Kullanicilar",
+    Buton = "Kullanıcıları Yönet"
+},
+
+        
+new
+{
+    Baslik = "Aşı Hatırlatmaları",
+    Aciklama = "Geciken ve yaklaşan aşı dozlarının takibi",
+    Controller = "AsiHatirlatmalari",
+    Buton = "Hatırlatmaları Gör"
+},
+
+new
+{
+    Baslik = "Raporlama",
+    Aciklama = "Randevu istatistikleri ve hizmet ücretleri",
+    Controller = "Raporlama",
+    Buton = "Raporları Gör"
+},
+new
+{
+    Baslik = "Aşı Hatırlatmaları",
+    Aciklama = "Geciken ve yaklaşan aşı dozlarının takibi",
+    Controller = "AsiHatirlatmalari",
+    Buton = "Hatırlatmaları Gör"
+}
+
+
+    };
 }
 
 <div class="container py-5">
 
     <div class="mb-5">
         <h1 class="fw-bold">Yönetim Paneli</h1>
+
         <p class="text-muted">
             Veteriner Kliniği Randevu ve Hasta Takip Sistemi
         </p>
+
         <span class="badge bg-success">
             Yönetici girişi başarılı
         </span>
@@ -16,38 +112,13 @@
 
     <div class="row g-4">
 
-        @{
-            var moduller = new[]
-            {
-                new { Baslik = "Hizmet Yönetimi",
-                      Aciklama = "Hizmet, süre ve ücret işlemleri" },
-
-                new { Baslik = "Veteriner Yönetimi",
-                      Aciklama = "Hekimler, uzmanlıklar ve çalışma saatleri" },
-                      
-new { Baslik = "Çalışma Saatleri",
-      Aciklama = "Veterinerlerin haftalık çalışma programı" },
-
-
-                new { Baslik = "Randevu Yönetimi",
-                      Aciklama = "Randevu onaylama ve reddetme" },
-
-                new { Baslik = "Evcil Hayvanlar",
-                      Aciklama = "Hasta bilgileri ve aşı kayıtları" },
-
-                new { Baslik = "Kullanıcı Yönetimi",
-                      Aciklama = "Üyeler ve kullanıcı rolleri" },
-
-                new { Baslik = "Raporlama",
-                      Aciklama = "Randevu istatistikleri ve ciro" }
-            };
-        }
-
         @foreach (var modul in moduller)
         {
             <div class="col-md-6 col-lg-4">
+
                 <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
+
+                    <div class="card-body p-4 d-flex flex-column">
 
                         <h5 class="fw-bold">
                             @modul.Baslik
@@ -55,48 +126,34 @@ new { Baslik = "Çalışma Saatleri",
 
                         <p class="text-muted">
                             @modul.Aciklama
-                        </p>   
-                        
+                        </p>
 
-                        
-                        @if (modul.Baslik == "Hizmet Yönetimi")
-                        {
-                            <a asp-controller="Hizmetler"
-                               asp-action="Index"
-                               class="btn btn-primary mt-2">
-                                Hizmetleri Yönet
-                            </a>
-                        }
-                        else if (modul.Baslik == "Veteriner Yönetimi")
-                        {
-                            <a asp-controller="Veterinerler"
-                               asp-action="Index"
-                               class="btn btn-primary mt-2">
-                                Veterinerleri Yönet
-                            </a>
-                        }
-                        
-                        else if (modul.Baslik == "Çalışma Saatleri")
-                        {
-                            <a asp-controller="VeterinerMusaitlikler"
-                               asp-action="Index"
-                               class="btn btn-primary mt-2">
-                                Çalışma Saatlerini Yönet
-                            </a>
-                        }
+                        <div class="mt-auto">
 
-                        else
-                        {
-                            <span class="badge bg-secondary">
-                                Hazırlanıyor
-                            </span>
-                        }
+                            @if (!string.IsNullOrEmpty(modul.Controller))
+                            {
+                                <a asp-controller="@modul.Controller"
+                                   asp-action="Index"
+                                   class="btn btn-primary mt-2">
+                                    @modul.Buton
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    Hazırlanıyor
+                                </span>
+                            }
 
+                        </div>
 
                     </div>
+
                 </div>
+
             </div>
         }
 
     </div>
+
 </div>
